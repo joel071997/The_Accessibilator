@@ -182,18 +182,18 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 text-center text-base text-gray-900'>
+      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 px-4 text-center text-base text-gray-900'>
         <h1 className='mb-11 mt-6 max-w-3xl text-4xl font-bold'>
           Making your documents easier to read
         </h1>
 
         <div className='relative w-[40rem] max-w-full overflow-hidden rounded-2xl bg-zinc-900 px-8 pb-28 pt-12 text-white'>
-          <h2 className='mb-4 max-w-4xl text-4xl font-semibold'>
+          <h2 className='max-w-4xl text-3xl font-semibold  md:mb-4 md:text-4xl'>
             Upload a Word document
           </h2>
 
           <p
-            className={`mb-5 ${
+            className={`mb-0 mt-5 md:my-3 md:mt-3 ${
               !!uploadedFiles.length ? 'visible' : 'invisible'
             }`}
           >
@@ -232,7 +232,12 @@ export default function Home() {
               onDrop={onFileDrop}
             >
               <div>
-                <p className='mb-3'>Select a document or drag and drop here</p>
+                <p className='mb-5 text-lg md:mb-3 md:text-base'>
+                  Select a document{' '}
+                  <span className='hidden md:inline'>
+                    or drag and drop here
+                  </span>
+                </p>
               </div>
               <div className='space-y-1 text-center'>
                 <div className='flex text-sm text-gray-600'>
