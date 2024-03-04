@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    font-size: calc(8.8px + 0.5vw);
+    font-size: max(11.5px, calc(8.8px + 0.5vw));
   }
   html,
   body {
