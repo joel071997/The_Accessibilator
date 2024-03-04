@@ -10,6 +10,7 @@ import AuthProvider from '../contexts/AuthContext';
 const lexend = Lexend({
   subsets: ['latin'],
   variable: '--font-lexend',
+  display: 'swap',
 });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -23,6 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </AuthProvider>
         </div>
       </Provider>
+
       <Script id='accessibilator_hotjar' strategy='afterInteractive'>
         {`(function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
