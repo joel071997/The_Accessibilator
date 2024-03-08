@@ -24,7 +24,7 @@
 
 @layer components {
   .btn {
-    @apply inline-flex flex-row items-center rounded-lg p-3 text-base font-bold focus:outline-none focus:ring-2 focus:ring-yellow-800 focus:ring-opacity-40  md:text-sm;
+    @apply inline-flex flex-row items-center rounded-lg p-3 text-base font-bold transition-transform duration-150 active:scale-95 hover:scale-105 focus:outline focus:outline-offset-2 focus:!outline-yellow-800 focus-visible:!outline-yellow-800 md:text-sm;
   }
 
   .btn-primary {
@@ -32,7 +32,7 @@
   }
 
   .btn-link {
-    @apply bg-transparent font-medium text-yellow-950;
+    @apply bg-transparent py-[0.625rem] font-medium text-yellow-950;
   }
 
   .form-control-input {
