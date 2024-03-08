@@ -23,7 +23,10 @@ const MyTagGroup: FC<MyTagGroupProps> = ({
       {/* Rendering the label for the tag group */}
       <Label>{label}</Label>
       {/* TagList to display a list of tags. It has a custom className for styling. */}
-      <TagList items={items} className='mt-6 grid grid-cols-4 gap-x-7 gap-y-6'>
+      <TagList
+        items={items}
+        className='mt-6 grid grid-cols-3 gap-x-7 gap-y-6 md:grid-cols-4'
+      >
         {/* Function to render each item as a MyTag component */}
         {(item) => (
           <MyTag
