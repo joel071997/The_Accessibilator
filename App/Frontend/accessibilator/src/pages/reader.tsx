@@ -243,7 +243,7 @@ const Reader = (props: Props) => {
                 <MdOutlineCompare className='h-5 w-5 md:h-6 md:w-6' />
               )
             }
-            className='absolute left-[44%] top-1/2 mr-12 -translate-x-1/2 -translate-y-1/2 items-center border border-yellow-900 px-6  py-2 text-base font-medium md:left-1/2'
+            className='absolute left-[44%] top-1/2 mr-12 box-content -translate-x-1/2 -translate-y-1/2 items-center border-2 border-yellow-900 px-6  py-2 text-base font-medium md:left-1/2'
             text={
               <span className='mb-[0.125rem] ml-1 inline-block'>
                 {isComparingDocs ? (
@@ -269,7 +269,7 @@ const Reader = (props: Props) => {
               role='navigation'
               variant='link'
               icon={<TbFileUpload className='h-7 w-7 md:h-5 md:w-5' />}
-              className='mr-5 border border-yellow-900 px-4 py-[0.375rem] text-base font-medium md:mr-10 md:px-6 md:py-2'
+              className='mr-5 box-content border-2 border-yellow-900 px-4 py-[0.375rem] text-base font-medium md:mr-10 md:px-6 md:py-2'
               text={
                 <span className='inline-block md:mb-[0.125rem] md:ml-1'>
                   <span className='hidden md:inline'>Upload New</span>
@@ -285,7 +285,7 @@ const Reader = (props: Props) => {
                 onClick={() => setHasSavedDoc(true)}
                 href={docUri}
                 role='button'
-                className='btn btn-primary border border-yellow-900 px-4 py-[0.375rem] text-lg md:px-6 md:py-2 md:pl-5 md:text-base'
+                className='btn btn-primary border-2 border-yellow-900 px-4 py-[0.375rem] text-lg md:px-6 md:py-2 md:pl-5 md:text-base'
                 download
                 target='_self'
               >
@@ -320,7 +320,7 @@ const Reader = (props: Props) => {
         {!isComparingDocs && (
           <div className='absolute bottom-24 right-10 z-[3] flex flex-col self-stretch px-3 pr-0 md:static'>
             <Button
-              className='mt-10 inline-flex gap-y-3 rounded-full p-6 text-base font-medium shadow-xl shadow-gray-400 md:flex-col md:rounded-3xl md:py-9'
+              className='mt-10 inline-flex gap-y-3 rounded-full p-6 text-base font-medium shadow-xl shadow-gray-400 md:flex-col md:rounded-3xl md:py-9 md:shadow-sm'
               text={<span className='hidden md:inline-block'>Refine</span>}
               icon={<FaWandMagicSparkles className='h-7 w-7' />}
               onClick={() => {
