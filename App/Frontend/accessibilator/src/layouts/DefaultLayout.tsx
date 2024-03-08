@@ -45,12 +45,15 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
       <div className='flex min-h-screen flex-col'>
         <header>
           <nav
-            className={`relative flex px-8 shadow ${
+            className={`relative flex px-5 shadow sm:px-8 ${
               variant === 'slim' ? 'py-2' : 'py-4'
             } `}
           >
             {/* Link component for navigation */}
-            <Link className='text-3xl font-extrabold uppercase' href='/'>
+            <Link
+              className='mr-auto text-3xl font-extrabold uppercase'
+              href='/'
+            >
               Accessibilator
             </Link>
             {/* Conditional rendering of the title */}
@@ -62,7 +65,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
             {/* Conditional rendering based on authentication status */}
             {isAuthenticated ? (
               // User menu for authenticated users
-              <Menu as='div' className='relative ml-auto hidden md:block'>
+              <Menu as='div' className='relative ml-auto md:block'>
                 <div>
                   <Menu.Button className='flex rounded-full border-2 border-primary-400 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-200'>
                     <span className='sr-only'>Toggle user menu</span>
@@ -91,7 +94,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                     <Menu.Item>
                       <Link
                         href={'/user/presets'}
-                        className='block bg-white px-4 py-2 text-sm text-gray-800 hover:bg-primary-100'
+                        className='block bg-white px-4 py-2 text-base text-gray-800 hover:bg-primary-100 md:text-sm'
                       >
                         My Settings
                       </Link>
@@ -99,7 +102,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                     <Menu.Item>
                       <Link
                         href={'/user/documents'}
-                        className='block bg-white px-4 py-2 text-sm text-gray-800 hover:bg-primary-100'
+                        className='block bg-white px-4 py-2 text-base text-gray-800 hover:bg-primary-100 md:text-sm'
                       >
                         Past Documents
                       </Link>
@@ -114,7 +117,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                         });
                       }}
                       className={
-                        'w-full bg-white px-4 py-2 text-left text-sm text-gray-800 file:block hover:bg-primary-100'
+                        'w-full bg-white px-4 py-2 text-left text-base text-gray-800 file:block hover:bg-primary-100 md:text-sm'
                       }
                     >
                       Log Out
@@ -146,7 +149,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                         onClick={() => {
                           setIsShowingLoginModal(true);
                         }}
-                        className='block w-full bg-white px-4 py-2 text-left text-sm text-gray-800 hover:bg-primary-100'
+                        className='block w-full bg-white px-4 py-2 text-left text-base text-gray-800 hover:bg-primary-100 md:text-sm'
                       >
                         Login with email
                       </button>
@@ -156,7 +159,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                     {IS_DEV_MODE && (
                       <Menu.Item>
                         <Link
-                          className='block bg-white px-4 py-2 text-sm text-gray-800 hover:bg-primary-100'
+                          className='block bg-white px-4 py-2 text-base text-gray-800 hover:bg-primary-100 md:text-sm'
                           href={`${redirectUrl}`}
                           target='_self'
                         >
@@ -178,7 +181,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                 setIsShowingFeedback(true);
               }}
             />
-            <div className='ml-auto flex md:hidden'>
+            <div className='ml-10 flex md:hidden'>
               <button
                 type='button'
                 className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700'
