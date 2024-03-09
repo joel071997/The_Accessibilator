@@ -137,32 +137,38 @@ const PresetsPage = () => {
           <title>Accessibilator | My Settings</title>
           <link rel='icon' href='/favicon.ico' />
         </Head>
-        <main className='flex flex-1 flex-col justify-center py-16  pb-8 text-center text-base text-gray-900'>
-          <div className='grid flex-1 grid-cols-4 gap-8 px-16'>
-            <div className='col-span-1 flex flex-col items-center rounded border border-gray-400/60 bg-stone-50 p-10'>
+        <main className='flex flex-1 flex-col justify-center py-10 pb-8  text-center text-base text-gray-900 md:py-16'>
+          <div className='flex flex-1 grid-cols-12 flex-col-reverse justify-between gap-8 px-4 md:grid md:px-8 lg:px-16'>
+            <div className='flex items-center justify-between rounded border border-gray-400/60 bg-stone-50 p-8 md:col-span-4 md:flex-col md:justify-normal md:p-10 lg:col-span-3'>
+              <div className='flex flex-col items-center '>
+                <div>
+                  <Image
+                    width={256}
+                    height={256}
+                    src={`https://ui-avatars.com/api/?name=${user?.username}&size=256&length=1&bold=true`}
+                    className='max-w-[5rem] rounded-full md:max-w-max'
+                    alt='profile name initials'
+                  />
+                </div>
+                <p className='mt-3 text-lg font-semibold md:mt-8'>
+                  {user?.username}
+                </p>
+                <p className='mt-1 font-medium md:mt-3'> {user?.email}</p>
+              </div>
+
               <div>
-                <Image
-                  width={256}
-                  height={256}
-                  src={`https://ui-avatars.com/api/?name=${user?.username}&size=256&length=1&bold=true`}
-                  className='rounded-full '
-                  alt='profile name initials'
+                <Button
+                  text='Logout'
+                  variant='link'
+                  className='btn-link mt-auto text-lg md:text-base'
+                  onClick={() => {
+                    logout();
+                  }}
                 />
               </div>
-              <p className='mt-8 text-lg font-semibold'>{user?.username}</p>
-              <p className='mt-3 font-medium'> {user?.email}</p>
-
-              <Button
-                text='Logout'
-                variant='link'
-                className='btn-link mt-auto'
-                onClick={() => {
-                  logout();
-                }}
-              />
             </div>
 
-            <div className='col-span-3 flex flex-col rounded border border-gray-400/60 bg-stone-50 px-16 py-10 text-left'>
+            <div className='flex flex-1 flex-col rounded border border-gray-400/60 bg-stone-50 px-8 py-10 text-left md:col-span-8 md:px-16 lg:col-span-9'>
               <h2 className='text-3xl font-medium'>My Settings</h2>
 
               <div className='mt-10 flex flex-wrap gap-x-5 gap-y-6 '>
@@ -177,7 +183,7 @@ const PresetsPage = () => {
                   );
                 })}
               </div>
-              <div className='mt-6 inline-flex h-36 w-24 flex-col items-stretch  rounded-md border-2 border-dashed border-yellow-900 p-2 text-lg capitalize'>
+              <div className='mb-10 mt-6 inline-flex h-36 w-24 flex-col items-stretch  rounded-md border-2 border-dashed border-yellow-900 p-2 text-lg capitalize'>
                 <div
                   className='flex flex-1 flex-col items-center justify-center border border-gray-200 shadow-md'
                   style={{
@@ -193,7 +199,7 @@ const PresetsPage = () => {
 
               <div className='mt-auto'>
                 <Button
-                  className='px-6 py-2 text-base'
+                  className='px-8 py-3 text-lg md:px-6 md:py-2 md:text-base'
                   text={'Modify Settings'}
                   onClick={() => {
                     setSlideModalOpen(true);
