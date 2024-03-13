@@ -10,25 +10,24 @@ import { ToastQueue } from '@react-spectrum/toast';
 import { reportException } from '../services/errorReporting';
 import DocumentArrowUpIcon from '@heroicons/react/24/solid/DocumentArrowUpIcon';
 
+// The Home component is the default export of this file
 export default function Home() {
+  // hooks and state declarations for managing upload process
   const router = useRouter();
 
   const [uploadProgress, setUploadProgress] = useState(0);
-
   const [isUploading, setIsUploading] = useState(false);
-
   const [docUploadError, setDocUploadError] = useState<null | string>('');
-
   const [dragActive, setDragActive] = useState(false);
-
   const [uploadedFiles, setUploadedFiles] = useState<
     { file: File | null; data: FileReader['result'] }[]
   >([]);
 
+  // Passing the objects by reference and their declarations for the DOM elements
   const dragOverRef = useRef<HTMLDivElement>(null);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Handler function to trigger when the upload is confirmed
   const onUploadConfirm = () => {
     setIsUploading(true);
     const formData = new FormData();
@@ -102,16 +101,19 @@ export default function Home() {
     }
   };
 
+  // Event handler function to handle the drag-over event on the HTML Element
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(true);
   };
 
+  // Event handler function to handle the the event when the user leaves the drag action
   const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
   };
 
+  // Event handler function to handle the files dropped onto the HTML Element
   const onFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
@@ -138,6 +140,7 @@ export default function Home() {
     }
   };
 
+  // handleDroppedFiles function to handle files after they are dropped or selected
   const handleDroppedFiles = (files: FileList) => {
     if (uploadedFiles.length > 0) {
       return;
@@ -165,6 +168,7 @@ export default function Home() {
     });
   };
 
+  // onFileUpload function to handle file upload via file input
   const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       handleDroppedFiles(e.target.files);
@@ -177,6 +181,7 @@ export default function Home() {
 
   return (
     <DefaultLayout>
+      {/* Setting up the head elements like title and favicon */}
       <Head>
         <title>Accessibilator</title>
         <link rel='icon' href='/favicon.ico' />
@@ -314,6 +319,7 @@ export default function Home() {
   );
 }
 
+// Define the utility function niceBytes to format file sizes
 function niceBytes(x) {
   const units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PiB', 'EiB', 'ZiB', 'YiB'];
   let l = 0,

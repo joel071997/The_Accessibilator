@@ -1,3 +1,4 @@
+// Importing necessary React components and hooks.
 import React, { useEffect, useMemo, useState } from 'react';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Head from 'next/head';
@@ -19,22 +20,19 @@ import { TbFileUpload } from 'react-icons/tb';
 
 type Props = {};
 
+// The Reader component for document reading and manipulation.
 const Reader = (props: Props) => {
   const router = useRouter();
   const { doc_id } = router.query;
 
   const [slideModalOpen, setSlideModalOpen] = useState(false);
-
   const [hasSavedDoc, setHasSavedDoc] = useState(false);
-
   const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState(false);
-
   const [isComparingDocs, setIsComparingDocs] = useState(false);
-
   const [isDocDataLoading, setIsDocDataLoading] = useState(true);
-
   const [currDocData, setCurrDocData] = useState<DocumentData | null>(null);
 
+  // Function to fetch a document based on its ID.
   const fetchDocument = async (id: string) => {
     setIsDocDataLoading(true);
     try {
@@ -44,9 +42,11 @@ const Reader = (props: Props) => {
       console.log(error);
       return Promise.reject(error);
     } finally {
+      // Final block to execute regardless of try/catch result.
     }
   };
 
+  // useEffect hook for fetching the document when the component mounts or the doc_id changes.
   useEffect(() => {
     setIsDocDataLoading(true);
     !!doc_id &&
@@ -74,6 +74,7 @@ const Reader = (props: Props) => {
           });
         });
 
+    // Cleanup any leftover side effects from the function if needed.
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doc_id]);
@@ -82,6 +83,7 @@ const Reader = (props: Props) => {
 
   const [isModifyLoading, setIsModifyLoading] = useState(false);
 
+  // Calling the API once the Save changes button is clicked for selected document modifications
   const onSaveConfig = (docParamData: DocModifyParams) => {
     setIsModifyLoading(true);
     const docModParams: DocModifyParams = {
@@ -144,6 +146,7 @@ const Reader = (props: Props) => {
       });
   };
 
+  // Handler function for the document reader of the original document
   const originalDocReader = useMemo(() => {
     return (
       currDocData?.versions.originalVersion && (
@@ -168,6 +171,7 @@ const Reader = (props: Props) => {
     );
   }, [currDocData?.versions.originalVersion]);
 
+  // Handler function for the document reader of the current modified document
   const currentDocReader = useMemo(() => {
     return (
       docUri && (
