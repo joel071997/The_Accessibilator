@@ -171,11 +171,17 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                 </Transition>
               </Menu>
             )}
+            <Link
+              href='/about'
+              className='ml-6 hidden rounded-lg px-3 py-2 text-base font-medium text-stone-900 underline md:inline-block'
+            >
+              About
+            </Link>
             {/* Display the Send Feedback button */}
             <Button
               role='navigation'
               variant='link'
-              className='ml-6 hidden px-6 py-2 text-base font-medium text-stone-900 underline md:inline-block'
+              className='ml-3 hidden px-6 py-2 text-base font-medium text-stone-900 underline md:inline-block'
               text={'Send Feedback'}
               onClick={() => {
                 setIsShowingFeedback(true);
@@ -222,7 +228,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
                 <div className='-my-6 divide-y divide-gray-500/10'>
                   <div className='space-y-4 py-6'>
                     <Link
-                      href='#'
+                      href='/about'
                       className='-mx-3 block rounded-lg px-3 py-2 text-lg font-semibold leading-7 text-stone-900 hover:bg-gray-50'
                     >
                       About
