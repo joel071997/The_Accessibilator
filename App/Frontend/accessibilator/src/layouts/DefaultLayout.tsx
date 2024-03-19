@@ -45,7 +45,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
       <div className='flex min-h-screen flex-col'>
         <header>
           <nav
-            className={`relative flex px-5 shadow sm:px-8 ${
+            className={`relative flex items-center px-5 shadow sm:px-8 ${
               variant === 'slim' ? 'py-2' : 'py-4'
             } `}
           >
@@ -173,7 +173,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
             )}
             <Link
               href='/about'
-              className='ml-6 hidden rounded-lg px-3 py-2 text-base font-medium text-stone-900 underline md:inline-block'
+              className='ml-8 hidden rounded-lg px-3 py-2 text-base font-medium text-stone-900 underline md:inline-block'
             >
               About
             </Link>
@@ -181,7 +181,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
             <Button
               role='navigation'
               variant='link'
-              className='ml-3 hidden px-6 py-2 text-base font-medium text-stone-900 underline md:inline-block'
+              className='ml-3 hidden px-3 py-2 text-base font-medium text-stone-900 underline hover:scale-100 md:inline-block'
               text={'Send Feedback'}
               onClick={() => {
                 setIsShowingFeedback(true);
