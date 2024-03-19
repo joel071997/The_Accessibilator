@@ -59,14 +59,14 @@ public class UserService {
     }
 
     // Authenticates a user by generating a magic token and sending it via email.
-    public void authenticateUserWithEmailLink(String email) {
+    public void authenticateUserWithEmailLink(String email, String redirectUrl) {
         SessionInfo sessionInfo = new SessionInfo();
         String magicToken = UUID.randomUUID().toString();
         sessionInfo.setSessionID(magicToken);
         sessionInfo.setCreatedDate(Instant.now());
         sessionInfo.setExpirationTime(Instant.now().plusSeconds(15 * 60));
         sessionService.saveSessionInfo(sessionInfo);
-        emailService.sendSimpleMessage(email, magicToken);
+        emailService.sendSimpleMessage(email, magicToken, redirectUrl);
     }
 
     /*

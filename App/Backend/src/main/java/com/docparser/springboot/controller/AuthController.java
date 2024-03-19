@@ -31,7 +31,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     public ResponseEntity<Object> loginUserUsingLink(@RequestBody Login login) {
         // Authenticate the user by sending an email link
-        userService.authenticateUserWithEmailLink(login.getEmail());
+        userService.authenticateUserWithEmailLink(login.getEmail(), login.getRedirectUrl());
         return ResponseEntity.ok("Email sent successfully");
     }
 
