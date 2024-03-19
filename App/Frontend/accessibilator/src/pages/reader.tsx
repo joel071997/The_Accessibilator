@@ -247,7 +247,9 @@ const Reader = (props: Props) => {
                 <MdOutlineCompare className='h-5 w-5 md:h-6 md:w-6' />
               )
             }
-            className='absolute left-[44%] top-1/2 mr-12 box-content -translate-x-1/2 -translate-y-1/2 items-center border-2 border-yellow-900 px-6  py-2 text-base font-medium md:left-1/2'
+            className={`absolute ${
+              isComparingDocs ? 'left-[50%]' : 'left-[44%] mr-12'
+            }  top-1/2  box-content -translate-x-1/2 -translate-y-1/2 items-center border-2 border-yellow-900 px-6  py-2 text-base font-medium md:left-1/2`}
             text={
               <span className='mb-[0.125rem] ml-1 inline-block'>
                 {isComparingDocs ? (
@@ -301,12 +303,12 @@ const Reader = (props: Props) => {
         </div>
       </nav>
       <main
-        className={`relative flex min-h-full flex-1 bg-slate-50 px-4 py-8 pb-8 text-gray-900 md:py-16 ${
+        className={`relative flex min-h-full flex-1 flex-col gap-2 bg-slate-50 px-4 py-8 pb-8 text-gray-900 md:flex-row md:py-16 ${
           isComparingDocs ? 'pt-4' : 'pt-8'
         }`}
       >
         {isComparingDocs && (
-          <div className='flex flex-1 flex-col items-stretch border border-stone-800  transition-all'>
+          <div className='flex aspect-[1/1.414] flex-1 flex-col items-stretch border border-stone-800 transition-all  md:aspect-auto'>
             <h2 className='my-3 text-center text-lg font-semibold'>Original</h2>
             {!isDocDataLoading && originalDocReader}
           </div>
@@ -314,7 +316,7 @@ const Reader = (props: Props) => {
         <div
           className={`${
             isComparingDocs ? 'lg:ml-12' : 'lg:ml-24'
-          } flex flex-1 flex-col items-stretch border border-stone-800`}
+          } flex aspect-[1/1.414] flex-1 flex-col items-stretch border border-stone-800 transition-all md:aspect-auto`}
         >
           <h2 className='my-3 text-center text-lg font-semibold'>
             Modified{!isComparingDocs && ' Document'}
@@ -322,7 +324,7 @@ const Reader = (props: Props) => {
           {!isDocDataLoading && currentDocReader}
         </div>
         {!isComparingDocs && (
-          <div className='absolute bottom-24 right-10 z-[3] flex flex-col self-stretch px-3 pr-0 md:static'>
+          <div className='absolute bottom-24 right-10 z-[3] flex  flex-col self-stretch px-3 pr-0 md:static '>
             <Button
               className='mt-10 inline-flex gap-y-3 rounded-full p-6 text-base font-medium shadow-xl shadow-gray-400 md:flex-col md:rounded-3xl md:py-9 md:shadow-sm'
               text={<span className='hidden md:inline-block'>Refine</span>}
