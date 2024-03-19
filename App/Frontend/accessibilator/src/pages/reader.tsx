@@ -303,7 +303,7 @@ const Reader = (props: Props) => {
         </div>
       </nav>
       <main
-        className={`relative flex min-h-full flex-1 flex-col gap-2 bg-slate-50 px-4 py-8 pb-8 text-gray-900 md:flex-row md:py-16 ${
+        className={`relative flex min-h-full flex-1 flex-col gap-2 bg-slate-50 px-4 py-6 pb-6 text-gray-900 md:flex-row md:py-10 ${
           isComparingDocs ? 'pt-4' : 'pt-8'
         }`}
       >
