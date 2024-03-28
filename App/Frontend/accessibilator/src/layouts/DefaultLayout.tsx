@@ -55,7 +55,7 @@ const DefaultLayout: FC<LayoutProps> = ({ children, title, variant }) => {
             </Link>
             {/* Conditional rendering of the title */}
             {title && (
-              <p className='absolute left-1/2 top-1/2 inline-block -translate-x-1/2 -translate-y-1/2 text-lg font-medium'>
+              <p className='absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 text-lg font-medium sm:inline-block'>
                 {title}
               </p>
             )}
