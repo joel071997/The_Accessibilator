@@ -18,7 +18,7 @@ const MyToggle: FC<MyToggleProps> = ({ ariaLabel, ...toggleProps }) => {
      * background color, and rounded corners.
      */
     <Switch
-      className='relative inline-flex h-6 w-11 items-center rounded-full ui-checked:bg-green-700 ui-checked:bg-opacity-70 ui-not-checked:bg-stone-400'
+      className='relative inline-flex h-[1.625rem] w-11 items-center rounded-full ui-checked:bg-green-700 ui-checked:bg-opacity-70 ui-not-checked:bg-stone-400 sm:h-6'
       {...toggleProps}
     >
       {/* The span with 'sr-only' class is used for screen readers, making the toggle accessible.

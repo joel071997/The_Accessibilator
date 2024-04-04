@@ -158,9 +158,7 @@ export default function AccessibilityReview() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      {/* Main content area */}
-      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 py-14 pb-8 text-center text-base text-gray-900'>
-        {/* Accessibility review section */}
+      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 px-4 py-14 pb-8 text-center text-base text-gray-900'>
         <div className='text-center'>
           <h1 className='mb-7 text-4xl font-bold'>
             The document has been uploaded successfully
@@ -174,7 +172,7 @@ export default function AccessibilityReview() {
             {/* Toggle for font size increase */}
             <div className='flex items-center justify-between py-5'>
               <InfoTooltip infoTip='Larger font sizes (12-14 pt.) makes reading easier, especially for readers who may find smaller text challenging to follow'>
-                <p className='text-lg'>Increase font size</p>
+                <p className='text-xl md:text-lg'>Increase font size</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Font size increased'
@@ -184,7 +182,7 @@ export default function AccessibilityReview() {
             </div>
             <div className='flex items-center justify-between py-5'>
               <InfoTooltip infoTip='We use sans serif fonts like Arial as they appear less crowded, making each letter more distinct and easier to read for people living with dyslexia.'>
-                <p className='text-lg'>Change font style</p>
+                <p className='text-xl md:text-lg'>Change font style</p>
               </InfoTooltip>
 
               <MyToggle
@@ -195,7 +193,7 @@ export default function AccessibilityReview() {
             </div>
             <div className='flex items-center justify-between py-5'>
               <InfoTooltip infoTip='Increasing the space between letters (around 35% of the average letter width) leads to a more readable text by reducing visual crowding, a common issue for those with dyslexia.'>
-                <p className='text-lg'>Increase letter spacing</p>
+                <p className='text-xl md:text-lg'>Increase letter spacing</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Inter-letter spacing increased'
@@ -204,8 +202,12 @@ export default function AccessibilityReview() {
               />
             </div>
             <div className='flex items-center justify-between py-5'>
-              <InfoTooltip infoTip='We try to avoid italics as much as possible, as they can cause letters to appear connected and crowded, which can be challenging for readers with dyslexia. Bold text will used for emphasis instead'>
-                <p className='text-lg'>Remove Italics</p>
+              <InfoTooltip
+                infoTip={
+                  'We try to avoid italics as much as possible, as they can cause letters to appear connected and crowded, which can be challenging for readers with dyslexia.\nBold text will used for emphasis instead'
+                }
+              >
+                <p className='text-xl md:text-lg'>Remove Italics</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Italics removed'
@@ -215,7 +217,7 @@ export default function AccessibilityReview() {
             </div>
             <div className='flex items-center justify-between py-5'>
               <InfoTooltip infoTip='The recommended line spacing (1.5) improves text clarity and reduces visual stress, making it easier for readers to follow lines of text.'>
-                <p className='text-lg'>Increase line spacing</p>
+                <p className='text-xl md:text-lg'>Increase line spacing</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Line spacing increased'
@@ -225,8 +227,12 @@ export default function AccessibilityReview() {
             </div>
 
             <div className='flex items-center justify-between py-5'>
-              <InfoTooltip infoTip='High contrast between text and background minimizes visual strain and enhances visibility of characters, particularly important for individuals with reading and/or visual difficulties'>
-                <p className='text-lg'>Improve Contrast</p>
+              <InfoTooltip
+                infoTip={
+                  'High contrast between text and background minimizes visual strain and enhances visibility of characters.\nIt is particularly important for individuals with reading and/or visual difficulties'
+                }
+              >
+                <p className='text-xl md:text-lg'>Improve Contrast</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Contrast increased'
@@ -235,8 +241,12 @@ export default function AccessibilityReview() {
               />
             </div>
             <div className='flex items-center justify-between py-5'>
-              <InfoTooltip infoTip="We've aligned the text to the left without justification. This alignment helps in maintaining a consistent visual flow, making it easier to find the start and finish of each line. It also ensures even spacing between words.">
-                <p className='text-lg'>Left Align</p>
+              <InfoTooltip
+                infoTip={
+                  "We've aligned the text to the left without justification.\nThis alignment helps in maintaining a consistent visual flow, making it easier to find the start and finish of each line.\nIt also ensures even spacing between words."
+                }
+              >
+                <p className='text-xl md:text-lg'>Left Align</p>
               </InfoTooltip>
               <MyToggle
                 ariaLabel='Alignment changed'
@@ -252,7 +262,7 @@ export default function AccessibilityReview() {
           {/* Back button */}
           <Button
             variant='link'
-            className=' mr-10 border border-yellow-900 px-6 py-2 text-base font-medium'
+            className=' mr-10 border border-yellow-900 px-6 py-2 text-xl font-medium md:text-base'
             text={'Back'}
             onClick={() => {
               router.back();
@@ -260,7 +270,7 @@ export default function AccessibilityReview() {
           />
           {/* Continue button */}
           <Button
-            className=' px-6 py-2 text-base'
+            className='border border-yellow-900 px-6 py-2 text-xl md:text-base'
             loading={isModifyLoading}
             text={'Continue'}
             onClick={() => {

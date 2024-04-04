@@ -15,6 +15,8 @@ import { MdOutlineCompare } from 'react-icons/md';
 import { reportException } from '../services/errorReporting';
 import { ToastQueue } from '@react-spectrum/toast';
 import MyModal from '../components/UI/MyModal';
+import { MdOutlineCloudDownload } from 'react-icons/md';
+import { TbFileUpload } from 'react-icons/tb';
 
 type Props = {};
 
@@ -200,7 +202,7 @@ const Reader = (props: Props) => {
         <title>Accessibilator | Document Reader</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <nav className='relative flex items-center justify-between border-b border-stone-800 bg-yellow-900/10 px-16 py-3'>
+      <nav className='relative flex items-center justify-between border-b border-stone-800 bg-yellow-900/10 px-3 py-3 md:px-8 lg:px-16'>
         <div>
           {!!currDocData && !isComparingDocs && (
             <Button
@@ -225,7 +227,11 @@ const Reader = (props: Props) => {
                   <HiArrowNarrowLeft className='mr-3 mt-[0.125rem] h-6 w-6' />
                 </span>
               }
-              text={'Back to review'}
+              text={
+                <span className='hidden sm:inline'>
+                  Back<span className='hidden md:inline'> to review</span>
+                </span>
+              }
               className='btn-link inline-flex items-center px-2 py-2 text-base font-medium text-stone-700'
             ></Button>
           )}
@@ -236,15 +242,21 @@ const Reader = (props: Props) => {
             variant={isComparingDocs ? 'primary' : 'link'}
             icon={
               isComparingDocs ? (
-                <FaWandMagicSparkles className='h-5 w-5' />
+                <FaWandMagicSparkles className='h-5 w-5 md:h-6 md:w-6' />
               ) : (
-                <MdOutlineCompare className='h-5 w-5' />
+                <MdOutlineCompare className='h-5 w-5 md:h-6 md:w-6' />
               )
             }
-            className='absolute left-1/2 top-1/2 mr-12 -translate-x-1/2 -translate-y-1/2 items-center border border-yellow-900  px-6 py-2 text-base font-medium'
+            className='absolute left-[44%] top-1/2 mr-12 box-content -translate-x-1/2 -translate-y-1/2 items-center border-2 border-yellow-900 px-6  py-2 text-base font-medium md:left-1/2'
             text={
               <span className='mb-[0.125rem] ml-1 inline-block'>
-                {isComparingDocs ? 'Continue Customising' : 'Compare Original'}
+                {isComparingDocs ? (
+                  <span>Continue Customising</span>
+                ) : (
+                  <span>
+                    Compare<span className='hidden md:inline'> Original</span>
+                  </span>
+                )}
               </span>
             }
             onClick={() => {
@@ -253,15 +265,21 @@ const Reader = (props: Props) => {
           />
 
           <div
-            className={`transition-opacity ${
+            className={`flex items-end transition-opacity ${
               isComparingDocs ? 'invisible' : 'visible'
             }`}
           >
             <Button
               role='navigation'
               variant='link'
-              className='mr-10 border border-yellow-900  px-6 py-2 text-base font-medium'
-              text={'Upload New Document'}
+              icon={<TbFileUpload className='h-7 w-7 md:h-5 md:w-5' />}
+              className='mr-5 box-content border-2 border-yellow-900 px-4 py-[0.375rem] text-base font-medium md:mr-10 md:px-6 md:py-2'
+              text={
+                <span className='inline-block md:mb-[0.125rem] md:ml-1'>
+                  <span className='hidden md:inline'>Upload New</span>
+                  <span className='hidden lg:inline'> Document</span>
+                </span>
+              }
               onClick={() => {
                 router.push('/');
               }}
@@ -271,18 +289,19 @@ const Reader = (props: Props) => {
                 onClick={() => setHasSavedDoc(true)}
                 href={docUri}
                 role='button'
-                className='btn btn-primary px-6 py-2 text-base'
+                className='btn btn-primary border-2 border-yellow-900 px-4 py-[0.375rem] text-lg md:px-6 md:py-2 md:pl-5 md:text-base'
                 download
                 target='_self'
               >
-                Download
+                <MdOutlineCloudDownload className='h-7 w-7  md:mr-2 md:h-6 md:w-6' />
+                <span className='hidden md:inline'>Download</span>
               </Link>
             )}
           </div>
         </div>
       </nav>
       <main
-        className={`flex flex-1 bg-slate-50 px-4 py-16 pb-8 text-gray-900 ${
+        className={`relative flex min-h-full flex-1 bg-slate-50 px-4 py-8 pb-8 text-gray-900 md:py-16 ${
           isComparingDocs ? 'pt-4' : 'pt-8'
         }`}
       >
@@ -294,7 +313,7 @@ const Reader = (props: Props) => {
         )}
         <div
           className={`${
-            isComparingDocs ? 'ml-12' : 'ml-24'
+            isComparingDocs ? 'lg:ml-12' : 'lg:ml-24'
           } flex flex-1 flex-col items-stretch border border-stone-800`}
         >
           <h2 className='my-3 text-center text-lg font-semibold'>
@@ -303,10 +322,10 @@ const Reader = (props: Props) => {
           {!isDocDataLoading && currentDocReader}
         </div>
         {!isComparingDocs && (
-          <div className='flex flex-col self-stretch px-3 pr-0'>
+          <div className='absolute bottom-24 right-10 z-[3] flex flex-col self-stretch px-3 pr-0 md:static'>
             <Button
-              className='mt-10 inline-flex flex-col gap-y-3 rounded-3xl px-6 py-9 text-base font-medium'
-              text={'Refine'}
+              className='mt-10 inline-flex gap-y-3 rounded-full p-6 text-base font-medium shadow-xl shadow-gray-400 md:flex-col md:rounded-3xl md:py-9 md:shadow-sm'
+              text={<span className='hidden md:inline-block'>Refine</span>}
               icon={<FaWandMagicSparkles className='h-7 w-7' />}
               onClick={() => {
                 setSlideModalOpen(true);

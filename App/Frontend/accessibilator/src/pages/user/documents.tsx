@@ -134,10 +134,10 @@ const DocumentsPage = () => {
           <title>Accessibilator | Your documents</title>
           <link rel='icon' href='/favicon.ico' />
         </Head>
-        <main className='flex flex-1 flex-col justify-center px-36 py-8 text-center text-base text-gray-900'>
-          <div className='col-span-3 flex flex-1 flex-col bg-stone-50 px-16 text-left'>
-            <h2 className='text-3xl font-medium'>Your Past Documents</h2>
-            <div className='mt-6 flex items-center gap-7 px-6 py-2 text-base font-semibold'>
+        <main className='flex flex-1 flex-col justify-center px-4 py-8 text-center text-base text-gray-900 sm:px-16 md:px-8 lg:px-24 xl:px-36'>
+          <div className='col-span-3 flex flex-1 flex-col rounded border border-gray-400/60 bg-stone-50 px-4 py-10 text-left md:px-8 lg:px-16'>
+            <h2 className='mb-6 text-3xl font-medium'>Your Past Documents</h2>
+            <div className='hidden items-center gap-7 px-6 py-2 text-base font-semibold sm:flex'>
               <div className='h-8 w-8'></div>
               <span className='flex-1'>Document Name</span>
               <span className='basis-32'>Uploaded</span>
@@ -158,35 +158,38 @@ const DocumentsPage = () => {
                   return (
                     <div
                       key={documentID}
-                      className={`flex items-center gap-7 rounded-md border-2 border-red-950/20 px-6 py-3 ${
+                      className={`flex items-center justify-between gap-4 rounded-md  border-2 border-red-950/20 px-3 py-3 sm:justify-normal sm:gap-7 sm:px-6 ${
                         !!isLoadingDeleteDocsObj?.[documentID]
                           ? 'pointer-events-none bg-gray-400 opacity-80'
                           : 'pointer-events-auto'
                       }`}
                     >
                       <HiOutlineDocumentText className='h-8 w-8' />
-                      <Link
-                        href={{
-                          pathname: '/reader',
-                          query: {
-                            doc_id: documentID,
-                          },
-                        }}
-                        prefetch={false}
-                        className='flex-1 text-lg'
-                      >
-                        {documentKey}
-                      </Link>
-                      <span className='capitalize-first basis-32'>
-                        {formatDistanceStrict(
-                          new Date(createdDate),
-                          new Date(),
-                          {
-                            addSuffix: true,
-                            roundingMethod: 'ceil',
-                          }
-                        )}
-                      </span>
+                      <div className='inline-flex flex-1 flex-col gap-1 sm:flex-auto sm:flex-row sm:items-center sm:gap-7'>
+                        <Link
+                          href={{
+                            pathname: '/reader',
+                            query: {
+                              doc_id: documentID,
+                            },
+                          }}
+                          prefetch={false}
+                          className='flex-1 break-all text-xl font-medium sm:break-words sm:text-lg'
+                        >
+                          {documentKey}
+                        </Link>
+                        <span className='capitalize-first sm:basis-32'>
+                          {formatDistanceStrict(
+                            new Date(createdDate),
+                            new Date(),
+                            {
+                              addSuffix: true,
+                              roundingMethod: 'ceil',
+                            }
+                          )}
+                        </span>
+                      </div>
+
                       <div className='basis-[5rem] text-center'>
                         <Link
                           href={version}
@@ -196,7 +199,7 @@ const DocumentsPage = () => {
                           <HiOutlineDownload className='h-6 w-6' />
                         </Link>
                       </div>
-                      <div className='basis-[4.5rem] text-center'>
+                      <div className='text-center sm:basis-[4.5rem]'>
                         {!!isLoadingDeleteDocsObj?.[documentID] ? (
                           <HashLoader
                             loading={true}

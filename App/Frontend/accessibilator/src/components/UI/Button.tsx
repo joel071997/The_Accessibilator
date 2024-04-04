@@ -56,9 +56,7 @@ const Button = React.forwardRef<Ref, BtnProps>(function Button(props, ref) {
       disabled={isDisabled || loading}
       className={`btn ${variant === 'link' ? 'btn-link' : 'btn-primary'} ${
         (loading || isDisabled) && 'pointer-events-none bg-opacity-60'
-      } ${
-        className || ''
-      } transition-transform duration-150 active:scale-95 hover:scale-105`}
+      } ${className || ''}`}
       ref={ref}
       {...btnProps}
     >
