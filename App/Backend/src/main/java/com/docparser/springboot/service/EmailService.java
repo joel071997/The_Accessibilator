@@ -12,15 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-    // This injects the value for 'magic.link.redirect.url' from the application
-    // properties.
-    @Value("${magic.link.redirect.url}")
-    private String redirectUrl;
 
     private final JavaMailSender emailSender;
 
     // Method for sending a simple email message.
-    public void sendSimpleMessage(String to, String token) {
+    public void sendSimpleMessage(String to, String token, String redirectUrl) {
         try {
             // Creating a MIME message using the JavaMailSender.
             MimeMessage messagemimeMessage = emailSender.createMimeMessage();

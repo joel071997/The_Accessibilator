@@ -12,6 +12,9 @@ import IsProtectedRoute from '../../hoc/IsProtectedRoute';
 import axiosInit from '../../services/axios';
 import { ToastQueue } from '@react-spectrum/toast';
 import { reportException } from '../../services/errorReporting';
+import MyModal from '../../components/UI/MyModal';
+import { HashLoader } from 'react-spinners';
+import { is } from 'date-fns/locale';
 
 // Default settings for document modification parameters
 const defaultSettings: DocModifyParams = {
@@ -41,6 +44,9 @@ const PresetsPage = () => {
   });
   const [slideModalOpen, setSlideModalOpen] = useState(false);
   const [isUserPresetLoading, setIsUserPresetLoading] = useState(true);
+  const [isDeleteAccountLoading, setIsDeleteAccountLoading] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
 
   /**
    * Define the async function for fetching user's preset configurations
@@ -69,6 +75,18 @@ const PresetsPage = () => {
       return Promise.reject(err);
     }
   };
+
+  const loader = (
+    <div className='flex h-96 w-full flex-col items-center justify-center'>
+      <HashLoader
+        loading={true}
+        color='#451a03'
+        size={'120px'}
+        aria-description='Deleting Account...'
+      />
+      <p className='mt-6 text-lg'>Deleting Account...</p>
+    </div>
+  );
 
   // Define the useEffect hook to fetch the user presets on component mount
   useEffect(() => {
@@ -124,6 +142,40 @@ const PresetsPage = () => {
       });
   };
 
+  const onDeleteConfirm = () => {
+    setIsDeleteAccountLoading(true);
+
+    axiosInit
+      .delete('/api/user')
+      .then((res) => {
+        ToastQueue.neutral('Account deleted successfully', {
+          timeout: 3000,
+        });
+        logout();
+      })
+      .catch((err) => {
+        // console.log(err);
+        ToastQueue.negative(
+          `An error occurred! ${
+            err?.response?.data.detail || err?.message || ''
+          }`,
+          {
+            timeout: 3000,
+          }
+        );
+        reportException(err, {
+          category: 'presets',
+          message: 'Failed to delete user account',
+          data: {
+            origin: 'Presets Screen',
+          },
+        });
+      })
+      .finally(() => {
+        setIsDeleteAccountLoading(false);
+      });
+  };
+
   // Parsing the user settings Object to display as preset options
   const presetsArr = [
     `Font Type: ${FONT_STYLE_OPTIONS.find(
@@ -166,13 +218,21 @@ const PresetsPage = () => {
                 <p className='mt-1 font-medium md:mt-3'> {user?.email}</p>
               </div>
 
-              <div>
+              <div className='mt-auto flex flex-col items-center'>
                 <Button
                   text='Logout'
                   variant='link'
-                  className='btn-link mt-auto text-lg md:text-base'
+                  className='btn-link text-lg md:text-base'
                   onClick={() => {
                     logout();
+                  }}
+                />
+                <Button
+                  text='Delete Account'
+                  variant='link'
+                  className='btn-link mt-3 text-lg text-red-700 md:text-base'
+                  onClick={() => {
+                    setIsDeleteAccountModalOpen(true);
                   }}
                 />
               </div>
@@ -235,6 +295,43 @@ const PresetsPage = () => {
           />
         )}
       </SlideModal>
+      <MyModal
+        title='Leaving us?'
+        size='sm'
+        isOpen={isDeleteAccountModalOpen}
+        onModalClose={() => setIsDeleteAccountModalOpen(false)}
+      >
+        {isDeleteAccountLoading ? (
+          loader
+        ) : (
+          <>
+            <p className='my-4 mt-7'>
+              Are you sure you want to delete your account?
+            </p>
+            <p className='my-4'>
+              All your unsaved documents and settings will be lost
+            </p>
+            <div className='mt-8 flex justify-end'>
+              <Button
+                variant='link'
+                className='mr-10 border border-yellow-900  px-6 py-2 text-base font-medium'
+                text={'Cancel'}
+                onClick={() => {
+                  setIsDeleteAccountModalOpen(false);
+                }}
+              />
+
+              <Button
+                onClick={() => {
+                  onDeleteConfirm();
+                }}
+                text={'Yes, delete account'}
+                className='btn btn-primary bg-red-700 px-6 py-2 text-base'
+              />
+            </div>
+          </>
+        )}
+      </MyModal>
     </>
   );
 };

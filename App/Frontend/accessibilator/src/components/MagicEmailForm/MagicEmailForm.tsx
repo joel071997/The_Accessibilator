@@ -50,11 +50,18 @@ const MagicEmailForm: FC<MagicEmailFormProps> = ({
     setIsSubmitLoading(true);
     try {
       // Authenticating the user
-      const feedbackRes = await axiosInit.post('/auth/login', data, {
-        headers: {
-          'Content-Type': 'application/json',
+      const feedbackRes = await axiosInit.post(
+        '/auth/login',
+        {
+          ...data,
+          redirectUrl: `${window.location.origin}/auth/magic-link`,
         },
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       // Handle response from the server
       if (feedbackRes.data) {
