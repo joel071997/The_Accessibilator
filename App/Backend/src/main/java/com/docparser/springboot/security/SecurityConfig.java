@@ -36,6 +36,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         // Define the origins which are allowed to make cross-origin requests
         configuration.addAllowedOrigin("https://dev.d3gfcwg1uu11c0.amplifyapp.com/");
+        configuration.addAllowedOrigin("https://accessibilator.live/");  
         configuration.addAllowedOrigin("http://localhost:3000/");
         // Define the list of allowed HTTP methods
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
