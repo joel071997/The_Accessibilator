@@ -5,7 +5,7 @@ import { IS_DEV_MODE } from '../configs/configs';
 // Determine the API URL based on whether the application is in development mode.
 const apiUrl = IS_DEV_MODE
   ? 'http://localhost:8080' // Use localhost for development.
-  : 'https://hn6noz98uf.execute-api.eu-north-1.amazonaws.com'; // Use AWS API Endpoint URL for production.
+  : 'https://api.accessibilator.live'; // Use AWS API Endpoint URL for production.
 
 // Initialize Axios with the base URL for API requests.
 const axiosInit = Axios.create({
