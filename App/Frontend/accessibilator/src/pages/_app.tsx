@@ -9,8 +9,9 @@ import AuthProvider from '../contexts/AuthContext';
 
 // Configuration for Lexend font
 const lexend = Lexend({
-  subsets: ['latin'], // Specifying the font subset to be used
-  variable: '--font-lexend', // Defining a CSS variable for the font
+  subsets: ['latin'],
+  variable: '--font-lexend',
+  display: 'swap',
 });
 
 // Defining the main App component
@@ -29,7 +30,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </AuthProvider>
         </div>
       </Provider>
-      {/* Script for Hotjar analytics integration */}
       <Script id='accessibilator_hotjar' strategy='afterInteractive'>
         {/* Inline script for configuring and initializing Hotjar */}
         {`(function(h,o,t,j,a,r){

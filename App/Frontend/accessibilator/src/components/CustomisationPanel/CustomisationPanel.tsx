@@ -192,8 +192,8 @@ const CustomisationPanel = ({
           Each option is enclosed in a div and contains sliders, toggles, etc.
           The options include font style, size, line and character spacing, alignment, and italics removal */}
           <div className='flex flex-col space-y-4 divide-y divide-gray-300 '>
-            <div className='relative px-16 pb-3 pt-8'>
-              <div className='absolute right-14 top-3'>
+            <div className='relative px-10 pb-3 pt-8 sm:px-16'>
+              <div className='absolute right-10 top-3 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle font style modification'
                   checked={!!modificationsObj?.fontType}
@@ -224,8 +224,8 @@ const CustomisationPanel = ({
                 }}
               />
             </div>
-            <div className='relative px-16 pb-3 pt-12'>
-              <div className='absolute right-14 top-4'>
+            <div className='relative px-10 pb-3 pt-12 sm:px-16'>
+              <div className='absolute right-10 top-4 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle font size modification'
                   checked={!!modificationsObj?.fontSize}
@@ -254,8 +254,8 @@ const CustomisationPanel = ({
                 }
               />
             </div>
-            <div className='relative px-16 pb-3 pt-12'>
-              <div className='absolute right-14 top-4'>
+            <div className='relative px-10 pb-3 pt-12 sm:px-16'>
+              <div className='absolute right-10 top-4 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle line spacing modification'
                   checked={!!modificationsObj?.lineSpacing}
@@ -284,8 +284,8 @@ const CustomisationPanel = ({
                 }
               />
             </div>
-            <div className='relative px-16 pb-3 pt-12'>
-              <div className='absolute right-14 top-4'>
+            <div className='relative px-10 pb-3 pt-12 sm:px-16'>
+              <div className='absolute right-10 top-4 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle letter spacing modification'
                   checked={!!modificationsObj?.characterSpacing}
@@ -317,8 +317,8 @@ const CustomisationPanel = ({
                 }
               />
             </div>
-            <div className='relative px-16 py-6 pb-0'>
-              <div className='absolute right-14 top-4'>
+            <div className='relative px-10 py-6 pb-0 sm:px-16'>
+              <div className='absolute right-10 top-4 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle letter spacing modification'
                   checked={!!modificationsObj?.alignment}
@@ -350,7 +350,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='top'
@@ -373,8 +373,8 @@ const CustomisationPanel = ({
           {/* Colour customisation options
           Options to set text and background color, including a custom theme creator */}
           <div className='flex flex-col space-y-4 divide-y divide-gray-300'>
-            <div className='relative px-16 pb-3 pt-12'>
-              <div className='absolute right-14 top-4'>
+            <div className='relative px-10 pb-3 pt-12 sm:px-16'>
+              <div className='absolute right-10 top-4 sm:right-14'>
                 <MyToggle
                   ariaLabel='Toggle Text and Background Colour Setting'
                   checked={!!modificationsObj?.backgroundColor}
@@ -435,6 +435,7 @@ const CustomisationPanel = ({
                           </label>
                           <div className='rounded border border-gray-400 p-1 pb-0'>
                             <input
+                              className='w-12 md:w-10'
                               type='color'
                               id='custom_text'
                               value={`#${
@@ -460,7 +461,7 @@ const CustomisationPanel = ({
                           <div className='rounded border border-gray-400 p-1 pb-0'>
                             <input
                               type='color'
-                              className='m-0 inline-block'
+                              className='m-0 inline-block w-12 md:w-10'
                               id='custom_bg'
                               value={`#${
                                 customThemeColors?.bgColor || 'ffffff'
@@ -510,7 +511,7 @@ const CustomisationPanel = ({
           {/* Special customisation options
           Currently, it contains an option to generate a Table of Contents */}
           <div className='flex flex-col space-y-4 divide-y divide-gray-300'>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
@@ -527,7 +528,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
@@ -544,7 +545,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
@@ -561,7 +562,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
@@ -578,7 +579,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
@@ -595,7 +596,7 @@ const CustomisationPanel = ({
                 />
               </div>
             </div>
-            <div className='px-16 py-6'>
+            <div className='px-10 py-6 sm:px-16'>
               <div className='flex items-center justify-between'>
                 <InfoTooltip
                   position='bottom'
