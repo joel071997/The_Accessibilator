@@ -12,5 +12,6 @@ import lombok.Setter;
 public class Login {
 
     String email;
+    String redirectUrl;
 
 }
