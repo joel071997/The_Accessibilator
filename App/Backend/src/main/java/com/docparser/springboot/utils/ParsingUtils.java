@@ -1,30 +1,69 @@
 package com.docparser.springboot.utils;
 
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import com.docparser.springboot.model.DocumentConfig;
+import org.apache.poi.xwpf.usermodel.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.util.*;
 import java.util.List;
+import java.util.function.Function;
+import java.util.regex.Pattern;
 
 @Component
 public class ParsingUtils {
 
 
-    public static List<XWPFParagraph> getParagraphsInTheDocument(XWPFDocument document) {
-        return document.getParagraphs();
+    public static List<String> getParagraphsInTheDocument(XWPFDocument document) {
+        List<String> paragraphs = new ArrayList<>();
+        document.getParagraphs().forEach(paragraph -> paragraphs.add(paragraph.getParagraphText()));
+        return paragraphs;
     }
+
+    public static Function<String, Boolean> checkForFontParameterChange = formatConfig -> formatConfig != null && !formatConfig.isEmpty();
+    public static Function<Boolean, Boolean> checkForBooleanFontParameterChange = formatConfig -> formatConfig != null;
+
 
     public String getTextFromParagraph(XWPFParagraph paragraph) {
         return paragraph.getParagraphText();
     }
 
+    public static Boolean checkIfAdvancedConfigEnabled(DocumentConfig userConfig, DocumentConfig dbConfig) {
+        if(dbConfig == null) {
+            return false;
+        }
+        if ((userConfig.getParagraphSplitting() != null && userConfig.getParagraphSplitting()) && (dbConfig.getParagraphSplitting() != null && dbConfig.getParagraphSplitting())) {
+            return true;
+        }
+        if ((userConfig.getHeaderGeneration() != null && userConfig.getHeaderGeneration()) && (dbConfig.getHeaderGeneration() != null && dbConfig.getHeaderGeneration())) {
+            return true;
+        }
+        if ((userConfig.getGenerateTOC() != null && userConfig.getGenerateTOC()) && (dbConfig.getGenerateTOC() != null && dbConfig.getGenerateTOC())) {
+            return true;
+        }
+        return false;
+    }
+
+    public static DocumentConfig resetAdvancedConfig(DocumentConfig config, DocumentConfig dbConfig) {
+        if (config.getParagraphSplitting() != null && config.getParagraphSplitting() && (dbConfig.getParagraphSplitting() != null && dbConfig.getParagraphSplitting())) {
+            config.setParagraphSplitting(false);
+        }
+        if (config.getHeaderGeneration() != null && config.getHeaderGeneration() && (dbConfig.getHeaderGeneration() != null && dbConfig.getHeaderGeneration())) {
+            config.setHeaderGeneration(false);
+        }
+        if (config.getGenerateTOC() != null && config.getGenerateTOC() && (dbConfig.getGenerateTOC() != null && dbConfig.getGenerateTOC())) {
+            config.setGenerateTOC(false);
+        }
+        return config;
+    }
+
     public static ParagraphAlignment mapStringToAlignment(String alignmentString) {
         return switch (alignmentString.toUpperCase()) {
             case "LEFT" -> ParagraphAlignment.LEFT;
-            case "CENTER" -> ParagraphAlignment.CENTER;
+            case "CENTRE" -> ParagraphAlignment.CENTER;
             case "RIGHT" -> ParagraphAlignment.RIGHT;
             case "JUSTIFY" -> ParagraphAlignment.BOTH;
             case "DISTRIBUTE" -> ParagraphAlignment.DISTRIBUTE;
@@ -70,39 +109,36 @@ public class ParsingUtils {
     }
 
     public static XWPFDocument copyStylesAndContent(XWPFDocument source, XWPFDocument target) {
-        for (XWPFParagraph sourceParagraph : source.getParagraphs()) {
+
+
+// Copy paragraphs (text, formatting, styles)
+        for (XWPFParagraph paragraph : source.getParagraphs()) {
             XWPFParagraph newParagraph = target.createParagraph();
+            newParagraph.getCTP().set(paragraph.getCTP().copy());
 
-            // Copy paragraph style
-            if (sourceParagraph.getCTP().getPPr() != null)
-                newParagraph.getCTP().setPPr((sourceParagraph.getCTP().getPPr()));
-
-            // Concatenate text from all runs in the source paragraph
-            StringBuilder paragraphText = new StringBuilder();
-            for (XWPFRun sourceRun : sourceParagraph.getRuns()) {
-                paragraphText.append(sourceRun.getText(0));
+            // Copy runs (text, formatting, styles)
+            for (XWPFRun run : paragraph.getRuns()) {
+                XWPFRun newRun = newParagraph.createRun();
+                newRun.getCTR().set(run.getCTR().copy());
+                // Copy other run-level properties as needed
             }
 
-            // Create a new run in the new paragraph and set its text
-            XWPFRun newRun = newParagraph.createRun();
-            newRun.setText(paragraphText.toString());
-
-            // Copy run style
-            if (sourceParagraph.getRuns()!= null&& !sourceParagraph.getRuns().isEmpty() &&sourceParagraph.getRuns().get(0).getCTR().getRPr() != null)
-                newRun.getCTR().setRPr((sourceParagraph.getRuns().get(0).getCTR().getRPr()));
+            // Copy additional paragraph-level properties if needed
         }
 
         return target;
     }
 
-    public  static Integer getHeadingSize(Integer fontSize){
-        return fontSize+2;
+    public static Integer getHeadingSize(Integer fontSize) {
+        return fontSize + 2;
     }
-    public static String  mapStringToFontStyle(String fontStyle) {
+
+    public static String mapStringToFontStyle(String fontStyle) {
         return switch (fontStyle) {
             case "openSans" -> "Open Sans";
             case "comicSans" -> "Comic Sans MS";
-            case "openDyslexic" ->  "OpenDyslexic";
+            case "dyslexie" -> "Dyslexie";
+            case "openDyslexic" -> "OpenDyslexic Bold";
             case "lexend" -> "Lexend";
             case "arial" -> "Arial";
             case "helvetica" -> "Helvetica";
@@ -110,6 +146,72 @@ public class ParsingUtils {
                 // Default to LEFT if the input string is not recognized
                     "Open Sans";
         };
+    }
+
+    public static String[] countLines(String text) {
+        Pattern re = Pattern.compile("(?<=[.!?])\\s+(?=[a-zA-Z0-9])", Pattern.MULTILINE | Pattern.COMMENTS);
+        return re.split(text);
+    }
+
+    public static void removeRuns(XWPFParagraph paragraph) {
+        for (int i = paragraph.getRuns().size() - 1; i >= 0; i--) {
+            XWPFRun run = paragraph.getRuns().get(i);
+            if (run.getEmbeddedPictures().isEmpty()) {
+                paragraph.removeRun(i);
+            }
+        }
+    }
+
+    public static String[] divideParagraph(String largeParagraph, int linesPerParagraph) {
+        String[] lines = countLines(largeParagraph);
+        int totalLines = lines.length;
+        int paragraphsCount = (int) Math.ceil((double) totalLines / linesPerParagraph);
+        String[] smallerParagraphs = new String[paragraphsCount];
+        int start = 0;
+        for (int i = 0; i < paragraphsCount; i++) {
+            int end = Math.min(start + linesPerParagraph, totalLines);
+            smallerParagraphs[i] = String.join(" ", Arrays.copyOfRange(lines, start, end));
+            start = end;
+        }
+        return smallerParagraphs;
+    }
+
+    public static XWPFSettings getSettings(XWPFDocument document) throws Exception {
+        java.lang.reflect.Field settings = XWPFDocument.class.getDeclaredField("settings");
+        settings.setAccessible(true);
+        return (XWPFSettings) settings.get(document);
+    }
+
+    public static boolean checkIfHeadingStylePresent(XWPFParagraph paragraph) {
+        if (paragraph.getStyleID() != null && paragraph.getStyleID().startsWith("Heading"))
+            return true;
+        if (paragraph.getRuns().size() == 1) {
+            return paragraph.getRuns().get(0).isBold();
+        }
+        return false;
+    }
+
+    public static Optional<List<String>> extractHeadings(XWPFDocument document) {
+        List<String> headings = new ArrayList<>();
+        List<XWPFParagraph> paragraphs = document.getParagraphs();
+        paragraphs.stream().filter(ParsingUtils::checkIfHeadingStylePresent).forEach(paragraph -> headings.add(paragraph.getRuns().get(0).toString()));
+        return Optional.of(headings);
+    }
+
+    public static CTPPr getCTPPr(XWPFParagraph paragraph) {
+        CTPPr ctpPr = paragraph.getCTP().isSetPPr() ? paragraph.getCTP().getPPr() : paragraph.getCTP().addNewPPr();
+        return ctpPr;
+    }
+
+    public static void loadCustomFonts() throws IOException, FontFormatException {
+        /*
+        String dyslexieFontPath = "src/main/resources/fonts/OpenDyslexic-Bold.otf";
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(dyslexieFontPath)));
+        Optional<Font> b = Arrays.stream(ge.getAllFonts()).filter(font -> font.getName().equals("OpenDyslexic")).findFirst();
+        Font[] f = ge.getAllFonts();
+         */
+
     }
 
 }

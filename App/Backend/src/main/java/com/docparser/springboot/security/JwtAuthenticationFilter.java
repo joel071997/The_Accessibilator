@@ -1,11 +1,11 @@
-package com.docparser.springboot.config;
+package com.docparser.springboot.security;
 
-import com.docparser.springboot.service.SessionService;
+
+import com.docparser.springboot.utils.SessionUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +18,7 @@ import java.util.Optional;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    @Autowired
-    private SessionService jwtTokenService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws  ServletException, IOException {
@@ -29,8 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = Optional.of(token.get().substring(7));
 
             // validate the token
-            if ( jwtTokenService.validateToken(token.get())) {
-               Authentication authentication = new UsernamePasswordAuthenticationToken(jwtTokenService.getSessionIdFromToken(token.get()), null, Collections.emptyList());
+            if (SessionUtils.validateToken(token.get())) {
+               Authentication authentication = new UsernamePasswordAuthenticationToken(SessionUtils.getSessionIdFromToken(token.get()), null, Collections.emptyList());
                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

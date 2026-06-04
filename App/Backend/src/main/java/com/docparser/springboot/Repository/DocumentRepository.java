@@ -2,7 +2,6 @@ package com.docparser.springboot.Repository;
 
 import com.docparser.springboot.model.DocumentConfig;
 import com.docparser.springboot.model.DocumentInfo;
-import com.docparser.springboot.model.ParagraphStyleInfo;
 import com.docparser.springboot.model.VersionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,6 +9,7 @@ import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags;
 
 import java.time.Instant;
+import java.util.Optional;
 
 
 @Repository
@@ -43,6 +43,12 @@ public class DocumentRepository {
             .addAttribute(Boolean.class, a -> a.name("generateTOC")
                     .getter(DocumentConfig::getGenerateTOC)
                     .setter(DocumentConfig::setGenerateTOC))
+            .addAttribute(Boolean.class, a -> a.name("paragraphSplitting")
+                    .getter(DocumentConfig::getParagraphSplitting)
+                    .setter(DocumentConfig::setParagraphSplitting))
+            .addAttribute(Boolean.class, a -> a.name("headerGeneration")
+                    .getter(DocumentConfig::getHeaderGeneration)
+                    .setter(DocumentConfig::setHeaderGeneration))
             .addAttribute(Boolean.class, a -> a.name("removeItalics")
                     .getter(DocumentConfig::getRemoveItalics)
                     .setter(DocumentConfig::setRemoveItalics))
@@ -89,10 +95,10 @@ public class DocumentRepository {
 
     }
 
-    public DocumentInfo getDocumentInfo(String documentID) {
+    public Optional<DocumentInfo> getDocumentInfo(String documentID) {
         DynamoDbTable<DocumentInfo> documentInfoTable = getTable();
         // Construct the key with partition and sort key
         Key key = Key.builder().partitionValue(documentID).build();
-        return documentInfoTable.getItem(key);
+        return Optional.of(documentInfoTable.getItem(key));
     }
 }
