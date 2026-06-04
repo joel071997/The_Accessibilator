@@ -1,3 +1,4 @@
+// Importing necessary React components and hooks.
 import React, { useEffect, useMemo, useState } from 'react';
 import DefaultLayout from '../layouts/DefaultLayout';
 import Head from 'next/head';
@@ -13,34 +14,37 @@ import { HiArrowNarrowLeft } from 'react-icons/hi';
 import { MdOutlineCompare } from 'react-icons/md';
 import { reportException } from '../services/errorReporting';
 import { ToastQueue } from '@react-spectrum/toast';
+import MyModal from '../components/UI/MyModal';
 
 type Props = {};
 
+// The Reader component for document reading and manipulation.
 const Reader = (props: Props) => {
   const router = useRouter();
   const { doc_id } = router.query;
 
   const [slideModalOpen, setSlideModalOpen] = useState(false);
-
+  const [hasSavedDoc, setHasSavedDoc] = useState(false);
+  const [isUnsavedModalOpen, setIsUnsavedModalOpen] = useState(false);
   const [isComparingDocs, setIsComparingDocs] = useState(false);
-
   const [isDocDataLoading, setIsDocDataLoading] = useState(true);
-
   const [currDocData, setCurrDocData] = useState<DocumentData | null>(null);
 
+  // Function to fetch a document based on its ID.
   const fetchDocument = async (id: string) => {
     setIsDocDataLoading(true);
     try {
-      const docRes = await axiosInit.get<DocumentData>(`/document/${id}`);
+      const docRes = await axiosInit.get<DocumentData>(`/api/file/${id}`);
       return Promise.resolve(docRes.data);
     } catch (error) {
       console.log(error);
-      // TODO: Toast error
       return Promise.reject(error);
     } finally {
+      // Final block to execute regardless of try/catch result.
     }
   };
 
+  // useEffect hook for fetching the document when the component mounts or the doc_id changes.
   useEffect(() => {
     setIsDocDataLoading(true);
     !!doc_id &&
@@ -68,6 +72,7 @@ const Reader = (props: Props) => {
           });
         });
 
+    // Cleanup any leftover side effects from the function if needed.
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doc_id]);
@@ -76,10 +81,8 @@ const Reader = (props: Props) => {
 
   const [isModifyLoading, setIsModifyLoading] = useState(false);
 
-  const onSaveConfig = (
-    docParamData: DocModifyParams,
-    docData: Pick<DocumentData, 'documentKey' | 'documentID' | 'versions'>
-  ) => {
+  // Calling the API once the Save changes button is clicked for selected document modifications
+  const onSaveConfig = (docParamData: DocModifyParams) => {
     setIsModifyLoading(true);
     const docModParams: DocModifyParams = {
       fontType: docParamData.fontType,
@@ -93,17 +96,25 @@ const Reader = (props: Props) => {
       removeItalics: docParamData.removeItalics,
       alignment: docParamData.alignment,
       generateTOC: docParamData.generateTOC,
+      borderGeneration: docParamData.borderGeneration,
+      headerGeneration: docParamData.headerGeneration,
+      paragraphSplitting: docParamData.paragraphSplitting,
+      syllableSplitting: docParamData.syllableSplitting,
+      handlePunctuations: docParamData.handlePunctuations,
     };
 
     axiosInit
-      .get<DocumentData>('/modifyFile', {
-        params: {
-          filename: docData.documentKey,
-          docID: docData.documentID,
-          versionID: docData.versions.originalVersion.versionID,
-          ...docModParams,
-        },
-      })
+      .post<DocumentData>(
+        '/api/file/modifyFile',
+        { ...docModParams },
+        {
+          params: {
+            filename: currDocData?.documentKey,
+            docID: currDocData?.documentID,
+            versionID: currDocData?.versions.originalVersion.versionID,
+          },
+        }
+      )
       .then((res) => {
         //  console.log(res);
         setCurrDocData(res.data);
@@ -128,10 +139,12 @@ const Reader = (props: Props) => {
         });
       })
       .finally(() => {
+        setHasSavedDoc(false);
         setIsModifyLoading(false);
       });
   };
 
+  // Handler function for the document reader of the original document
   const originalDocReader = useMemo(() => {
     return (
       currDocData?.versions.originalVersion && (
@@ -156,6 +169,7 @@ const Reader = (props: Props) => {
     );
   }, [currDocData?.versions.originalVersion]);
 
+  // Handler function for the document reader of the current modified document
   const currentDocReader = useMemo(() => {
     return (
       docUri && (
@@ -181,36 +195,44 @@ const Reader = (props: Props) => {
   }, [docUri]);
 
   return (
-    <DefaultLayout title='Document Reader' variant='dark'>
+    <DefaultLayout title='Document Reader' variant='slim'>
       <Head>
         <title>Accessibilator | Document Reader</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <nav className='flex items-center justify-between border-b border-stone-800 px-16 py-3'>
+      <nav className='relative flex items-center justify-between border-b border-stone-800 bg-yellow-900/10 px-16 py-3'>
         <div>
           {!!currDocData && !isComparingDocs && (
-            <Link
-              href={{
-                pathname: '/accessibility-review',
-                query: {
-                  doc_key: currDocData?.documentKey,
-                  doc_id: currDocData?.documentID,
-                  version_id: currDocData?.versions.originalVersion.versionID,
-                },
+            <Button
+              variant='link'
+              onClick={() => {
+                if (hasSavedDoc) {
+                  router.push({
+                    pathname: '/accessibility-review',
+                    query: {
+                      doc_key: currDocData?.documentKey,
+                      doc_id: currDocData?.documentID,
+                      version_id:
+                        currDocData?.versions.originalVersion.versionID,
+                    },
+                  });
+                } else {
+                  setIsUnsavedModalOpen(true);
+                }
               }}
+              icon={
+                <span aria-hidden='true'>
+                  <HiArrowNarrowLeft className='mr-3 mt-[0.125rem] h-6 w-6' />
+                </span>
+              }
+              text={'Back to review'}
               className='btn-link inline-flex items-center px-2 py-2 text-base font-medium text-stone-700'
-            >
-              <span aria-hidden='true'>
-                <HiArrowNarrowLeft className='mr-3 mt-[0.125rem] h-6 w-6' />
-              </span>
-              Back to review
-            </Link>
+            ></Button>
           )}
         </div>
 
         <div className='flex items-center'>
           <Button
-            role='navigation'
             variant={isComparingDocs ? 'primary' : 'link'}
             icon={
               isComparingDocs ? (
@@ -219,7 +241,7 @@ const Reader = (props: Props) => {
                 <MdOutlineCompare className='h-5 w-5' />
               )
             }
-            className='mr-12 items-center border border-yellow-900  px-6 py-2 text-base font-medium'
+            className='absolute left-1/2 top-1/2 mr-12 -translate-x-1/2 -translate-y-1/2 items-center border border-yellow-900  px-6 py-2 text-base font-medium'
             text={
               <span className='mb-[0.125rem] ml-1 inline-block'>
                 {isComparingDocs ? 'Continue Customising' : 'Compare Original'}
@@ -246,6 +268,7 @@ const Reader = (props: Props) => {
             />
             {docUri && (
               <Link
+                onClick={() => setHasSavedDoc(true)}
                 href={docUri}
                 role='button'
                 className='btn btn-primary px-6 py-2 text-base'
@@ -301,10 +324,52 @@ const Reader = (props: Props) => {
           <CustomisationPanel
             onConfigSave={onSaveConfig}
             configSaveLoading={isModifyLoading}
-            docData={currDocData}
+            customisationConfig={currDocData.documentConfig}
           />
         )}
       </SlideModal>
+      <MyModal
+        title='Save your work!'
+        size='sm'
+        isOpen={isUnsavedModalOpen}
+        onModalClose={() => setIsUnsavedModalOpen(false)}
+      >
+        <p className='my-4 mt-7'>All unsaved changes will be lost</p>
+        <p className='my-4'>Would you like to download the document?</p>
+        <div className='mt-8 flex justify-end'>
+          <Button
+            role='navigation'
+            variant='link'
+            className='mr-10 border border-yellow-900  px-6 py-2 text-base font-medium'
+            text={'Go back to review'}
+            onClick={() => {
+              router.push({
+                pathname: '/accessibility-review',
+                query: {
+                  doc_key: currDocData?.documentKey,
+                  doc_id: currDocData?.documentID,
+                  version_id: currDocData?.versions.originalVersion.versionID,
+                },
+              });
+            }}
+          />
+          {docUri && (
+            <Link
+              onClick={() => {
+                setHasSavedDoc(true);
+                setIsUnsavedModalOpen(false);
+              }}
+              href={docUri}
+              role='button'
+              className='btn btn-primary px-6 py-2 text-base'
+              download
+              target='_self'
+            >
+              Download
+            </Link>
+          )}
+        </div>
+      </MyModal>
     </DefaultLayout>
   );
 };

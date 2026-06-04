@@ -2,6 +2,10 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
   transpilePackages: [
     '@adobe/react-spectrum',
     '@react-spectrum/actionbar',
@@ -58,6 +62,16 @@ const nextConfig = {
     '@spectrum-icons/ui',
     '@spectrum-icons/workflow',
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+        port: '',
+        pathname: '/api/**',
+      },
+    ],
+  },
 };
 
 module.exports = withSentryConfig(

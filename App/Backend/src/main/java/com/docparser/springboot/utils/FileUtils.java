@@ -12,26 +12,49 @@ import java.util.regex.Pattern;
 
 @Component
 public class FileUtils {
-    public  static File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
+
+private FileUtils() {
+        // Private constructor to prevent instantiation
+    }
+    // Converts a MultipartFile to a File
+    public static File convertMultiPartToFile(MultipartFile file) throws IOException {
+        // Create a File object from the original file name of the MultipartFile
+        File convFile = new File(Objects.requireNonNull(getMultipartFileName(file)));
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
         return convFile;
     }
 
-    public  static String generateFileName(MultipartFile multiPart) {
-        return  removeSpecialCharacters(multiPart.getOriginalFilename());
-    }
-    public static String generateFileName(File file) {
-        return  file.getName();
+    // Generates a file name from a MultipartFile by removing special characters
+    public static String generateFileName(MultipartFile multiPart) {
+        /*
+         * Calls the helper method to remove special characters and return the cleaned
+         * file name
+         */
+        return removeSpecialCharacters(getMultipartFileName(multiPart));
     }
 
-    private static String removeSpecialCharacters(String fileName) {
+    // Generates a file name from a File object
+    public static String generateFileName(File file) {
+
+        return file.getName();
+    }
+
+    public static String getMultipartFileName(MultipartFile file) {
+        if (file.getOriginalFilename() != null && !file.getOriginalFilename().equals("")) {
+            return file.getOriginalFilename();
+        }
+        return file.getName();
+    }
+
+    // Helper method to remove special characters from a string
+    public static String removeSpecialCharacters(String fileName) {
         // Define a regular expression to match special characters
         String regex = "[^a-zA-Z0-9\\.\\s\\-_]";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(fileName);
+        // Replace all special characters with an empty string
         return matcher.replaceAll("");
     }
 }

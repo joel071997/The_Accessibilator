@@ -1,42 +1,30 @@
 package com.docparser.springboot.model;
 
+import lombok.*;
 
+/**
+ * The FeedBackForm class represents a model for collecting user feedback.
+ * It includes properties for user email, what they liked, disliked, and
+ * suggestions for new features.
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class FeedBackForm {
 
-   private  String email;
-    private  String whatUserLiked;
-    private  String whatUserDisliked;
-    private  String newFeatures;
+    // Email address of the user providing feedback
+    private String email;
 
-    public String getEmail() {
-        return email;
-    }
+    // Details about what the user liked
+    private String whatUserLiked;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    // Details about what the user disliked
+    private String whatUserDisliked;
 
-    public String getWhatUserLiked() {
-        return whatUserLiked;
-    }
+    // User suggestions for new features
+    private String newFeatures;
 
-    public void setWhatUserLiked(String whatUserLiked) {
-        this.whatUserLiked = whatUserLiked;
-    }
 
-    public String getWhatUserDisliked() {
-        return whatUserDisliked;
-    }
-
-    public void setWhatUserDisliked(String whatUserDisliked) {
-        this.whatUserDisliked = whatUserDisliked;
-    }
-
-    public String getNewFeatures() {
-        return newFeatures;
-    }
-
-    public void setNewFeatures(String newFeatures) {
-        this.newFeatures = newFeatures;
-    }
 }

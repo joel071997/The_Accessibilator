@@ -10,25 +10,24 @@ import { ToastQueue } from '@react-spectrum/toast';
 import { reportException } from '../services/errorReporting';
 import DocumentArrowUpIcon from '@heroicons/react/24/solid/DocumentArrowUpIcon';
 
+// The Home component is the default export of this file
 export default function Home() {
+  // hooks and state declarations for managing upload process
   const router = useRouter();
 
   const [uploadProgress, setUploadProgress] = useState(0);
-
   const [isUploading, setIsUploading] = useState(false);
-
   const [docUploadError, setDocUploadError] = useState<null | string>('');
-
   const [dragActive, setDragActive] = useState(false);
-
   const [uploadedFiles, setUploadedFiles] = useState<
     { file: File | null; data: FileReader['result'] }[]
   >([]);
 
-  const dragOverRef = useRef<HTMLLabelElement>(null);
-
+  // Passing the objects by reference and their declarations for the DOM elements
+  const dragOverRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Handler function to trigger when the upload is confirmed
   const onUploadConfirm = () => {
     setIsUploading(true);
     const formData = new FormData();
@@ -36,7 +35,7 @@ export default function Home() {
     if (!!uploadedFiles[0].file) {
       formData.append('file', uploadedFiles[0].file);
       axiosInit
-        .post('/uploadFile', formData, {
+        .post('/api/file/uploadFile', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -73,7 +72,9 @@ export default function Home() {
         )
         .catch((err) => {
           ToastQueue.negative(
-            `An error occured! ${err?.response?.message || err?.message || ''}`,
+            `An error occurred! ${
+              err?.response?.message || err?.message || ''
+            }`,
             {
               timeout: 5000,
             }
@@ -100,17 +101,20 @@ export default function Home() {
     }
   };
 
-  const onDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+  // Event handler function to handle the drag-over event on the HTML Element
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(true);
   };
 
-  const onDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+  // Event handler function to handle the the event when the user leaves the drag action
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
   };
 
-  const onFileDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+  // Event handler function to handle the files dropped onto the HTML Element
+  const onFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragActive(false);
 
@@ -136,6 +140,7 @@ export default function Home() {
     }
   };
 
+  // handleDroppedFiles function to handle files after they are dropped or selected
   const handleDroppedFiles = (files: FileList) => {
     if (uploadedFiles.length > 0) {
       return;
@@ -163,6 +168,7 @@ export default function Home() {
     });
   };
 
+  // onFileUpload function to handle file upload via file input
   const onFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       handleDroppedFiles(e.target.files);
@@ -175,24 +181,33 @@ export default function Home() {
 
   return (
     <DefaultLayout>
+      {/* Setting up the head elements like title and favicon */}
       <Head>
         <title>Accessibilator</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 text-center text-gray-900'>
-        <h1 className='mb-11 max-w-3xl text-4xl font-bold'>
+      {/* Defining the JSX for the main content of the page */}
+      <main className='flex flex-1 flex-col items-center justify-center bg-slate-50 text-center text-base text-gray-900'>
+        <h1 className='mb-11 mt-6 max-w-3xl text-4xl font-bold'>
           Making your documents easier to read
         </h1>
 
         <div className='relative w-[40rem] max-w-full overflow-hidden rounded-2xl bg-zinc-900 px-8 pb-28 pt-12 text-white'>
           <h2 className='mb-4 max-w-4xl text-4xl font-semibold'>
-            Upload a document
+            Upload a Word document
           </h2>
-          <p className='mb-5'>Supported documents include Word(docx)</p>
+
+          <p
+            className={`mb-5 ${
+              !!uploadedFiles.length ? 'visible' : 'invisible'
+            }`}
+          >
+            Your document will be deleted from our system after 24 hours
+          </p>
 
           {uploadedFiles.length ? (
-            <div className='mt-14 rounded-md bg-zinc-700 px-12 py-3 text-left text-base text-zinc-100'>
+            <div className='mt-12 rounded-md bg-zinc-700 px-12 py-3 text-left text-base text-zinc-100'>
               {isUploading || uploadProgress === 100 ? (
                 <p className='text-2xl font-semibold'>
                   {isUploading
@@ -211,8 +226,7 @@ export default function Home() {
               )}
             </div>
           ) : (
-            <label
-              htmlFor='file-upload'
+            <div
               className={`${
                 dragActive
                   ? 'border-zinc-50 bg-zinc-900'
@@ -234,7 +248,7 @@ export default function Home() {
                   >
                     <span className='btn inline-flex gap-2 border-[1px] border-white bg-gray-700 px-4 text-base text-slate-50'>
                       <DocumentArrowUpIcon className='h-6 w-6' />
-                      <span> Select Document</span>
+                      <span className='text-lg'>Select Document</span>
                     </span>
                     <input
                       accept='doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
@@ -248,9 +262,11 @@ export default function Home() {
                   </label>
                   <p className='pl-1'></p>
                 </div>
-                <p className='pt-2 text-xs text-gray-50'>Max. size: 10MB</p>
+                <p className='pt-2 text-sm text-gray-50'>
+                  Max. size: <span className='underline'>10MB</span>
+                </p>
               </div>
-            </label>
+            </div>
           )}
 
           <div className='absolute bottom-0 left-0 w-full bg-zinc-800 px-8 py-3 text-right'>
@@ -270,21 +286,25 @@ export default function Home() {
                 </>
               ) : (
                 <>
-                  <Button
-                    variant='link'
-                    className=' mr-10 px-6 py-2 text-base font-medium text-zinc-50'
-                    text={'Cancel'}
-                    onClick={() => {
-                      setUploadedFiles([]);
-                    }}
-                  />
-                  <Button
-                    className='bg-zinc-50 px-6 py-2 text-base font-medium text-zinc-900'
-                    text={'Continue to review'}
-                    onClick={() => {
-                      onUploadConfirm();
-                    }}
-                  />
+                  {!(isUploading || uploadProgress === 100) && (
+                    <>
+                      <Button
+                        variant='link'
+                        className=' mr-10 px-6 py-2 text-base font-medium text-zinc-50'
+                        text={'Cancel'}
+                        onClick={() => {
+                          setUploadedFiles([]);
+                        }}
+                      />
+                      <Button
+                        className='bg-zinc-50 px-6 py-2 text-base font-medium text-zinc-900'
+                        text={'Upload'}
+                        onClick={() => {
+                          onUploadConfirm();
+                        }}
+                      />
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -295,6 +315,7 @@ export default function Home() {
   );
 }
 
+// Define the utility function niceBytes to format file sizes
 function niceBytes(x) {
   const units = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PiB', 'EiB', 'ZiB', 'YiB'];
   let l = 0,

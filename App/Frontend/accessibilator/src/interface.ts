@@ -15,6 +15,11 @@ interface DocModifyParams {
   alignment: 'LEFT' | 'RIGHT' | 'CENTRE' | null;
   removeItalics: boolean | null;
   generateTOC: boolean | null;
+  paragraphSplitting: boolean | null;
+  headerGeneration: boolean | null;
+  borderGeneration: boolean | null;
+  syllableSplitting: boolean | null;
+  handlePunctuations: boolean | null;
 }
 interface DocumentData {
   documentID: string;
@@ -30,4 +35,17 @@ interface DocumentData {
       versionID: string;
     };
   };
+}
+
+interface User {
+  userId: string;
+  email: string;
+  username: string;
+  userDocuments?: {
+    documentID: string;
+    documentKey: string;
+    createdDate: string;
+    expirationTime: string;
+  }[];
+  userPresets?: DocModifyParams;
 }
