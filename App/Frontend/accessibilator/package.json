@@ -3,14 +3,45 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@cyntler/react-doc-viewer": "^1.14.0",
+    "@headlessui/react": "^1.7.17",
+    "@headlessui/tailwindcss": "^0.2.0",
+    "@heroicons/react": "^2.0.18",
+    "axios": "^1.6.0",
+    "lodash": "^4.17.21",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-aria-components": "^1.0.0-rc.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.47.0",
+    "react-icons": "^4.12.0",
+    "react-spinners": "^0.13.8",
+    "tailwindcss-react-aria-components": "^1.0.0-rc.0"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.6",
+    "@types/lodash": "^4.14.200",
+    "@types/node": "20.8.6",
+    "@types/react": "18.2.28",
+    "autoprefixer": "^10.4.16",
+    "daisyui": "^3.9.4",
+    "eslint": "8.53.0",
+    "eslint-config-next": "14.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.7",
+    "tailwindcss": "^3.3.3",
+    "typescript": "5.2.2"
   }
 }

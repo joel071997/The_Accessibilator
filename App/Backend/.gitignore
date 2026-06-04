@@ -1,0 +1,42 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+.idea/jarRepositories.xml
+.idea/dataSources.local.xml
+.idea/compiler.xml
+.idea/misc.xml
+.idea/uiDesigner.xml
+*.iws
+*.iml
+*.ipr
+*.xml
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Property file ###
+src/main/resources/application.properties
